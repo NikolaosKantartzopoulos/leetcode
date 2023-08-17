@@ -1,50 +1,66 @@
 function sortNums(nums) {
-  function merge(inputArr) {
-    // divide array in two parts
-    let leftPart = new Array();
-    let rightPart = new Array();
+  function mergeSort(inputArr) {
+    // Base case
+    if (inputArr.length <= 1) return;
 
     let middleIndex = Math.floor(inputArr.length / 2);
 
-    for (let i = 0; i <= middleIndex; i++) {
+    // Allocate space for left and right parts
+    let leftPart = new Array(middleIndex);
+    let rightPart = new Array(inputArr.length - middleIndex);
+
+    // Copy to left array
+    for (let i = 0; i < middleIndex; i++) {
       leftPart[i] = inputArr[i];
     }
 
-    for (let j = middleIndex + 1; j < inputArr.length; j++) {
-      rightPart[j - middleIndex - 1] = inputArr[j];
+    //Copy to right array
+    for (let j = middleIndex; j < inputArr.length; j++) {
+      rightPart[j - middleIndex] = inputArr[j];
     }
 
-    //merge the arrays
+    // Recursive calls to left and right part, then merge
+    mergeSort(leftPart);
+    mergeSort(rightPart);
+    merge(leftPart, rightPart, inputArr);
+  }
+
+  function merge(leftPart, rightPart, inputArr) {
+    // Merge the arrays
 
     let lp = 0;
     let rp = 0;
-
-    let retArr = [];
     let retPointer = 0;
 
-    while (lp < leftPart.length || rp < rightPart.length) {
-      if (rightPart[rp] == undefined) {
-        retArr = [...retArr, ...leftPart.slice(lp, leftPart.length)];
-        break;
-      }
-      if (leftPart[lp] == undefined) {
-        retArr.concat(rightPart.slice(rp, rightPart.length));
-        break;
-      }
+    while (lp < leftPart.length && rp < rightPart.length) {
       if (leftPart[lp] < rightPart[rp]) {
-        retArr[retPointer] = leftPart[lp];
+        inputArr[retPointer] = leftPart[lp];
         lp++;
       } else {
-        retArr[retPointer] = rightPart[rp];
+        inputArr[retPointer] = rightPart[rp];
         rp++;
       }
       retPointer++;
     }
+
+    // Fill the rest of left part
+    while (lp < leftPart.length) {
+      inputArr[retPointer] = leftPart[lp];
+      lp++;
+      retPointer++;
+    }
+
+    // Fill the rest of right part
+    while (rp < rightPart.length) {
+      inputArr[retPointer] = rightPart[rp];
+      rp++;
+      retPointer++;
+    }
   }
 
-  console.log(retArr);
+  mergeSort(nums);
+
+  return nums;
 }
 
-sortNums([1, 5, 6, 4, 3, 2, 0]);
-
-module.exports = mergeSort;
+module.exports = sortNums;

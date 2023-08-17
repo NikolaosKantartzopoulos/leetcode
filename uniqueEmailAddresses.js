@@ -21,7 +21,6 @@ var uniqueEmailAddresses = function (emails) {
     }
     set.add(local.concat("@").concat(domain));
   }
-  console.log(set);
   return set.size;
 };
 

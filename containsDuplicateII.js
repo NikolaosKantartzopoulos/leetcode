@@ -7,18 +7,19 @@ var containsDuplicateII = function (nums, k) {
   let r = 0;
 
   while (r <= k) {
-    let num = nums[r];
-    if (set.has(num)) return true;
-    set.add(num);
-    r++;
+    if (set.has(nums[r])) return true;
+    set.add(nums[r]);
+    if (r == k) {
+      break;
+    } else {
+      r++;
+    }
   }
-
-  r--;
 
   while (r < nums.length) {
     set.delete(nums[l]);
-    l++;
     set.add(nums[r]);
+    l++;
     r++;
     if (set.has(nums[r])) return true;
   }
